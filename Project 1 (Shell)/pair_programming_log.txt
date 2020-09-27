@@ -1,0 +1,39 @@
+
+Project 0 Pair Programming Log
+
+Use this log to record the dates and times you work on your project, which 
+team members were working ont he project, and who was driving.  For example:
+9/17, 9:30a - 11:45a Michael, Kelly, Clare, and Emily, 2.25 hours
+Driver Order and Time Length:
+Michael, 30 minutes
+Clare, 30 minutes
+Emily, 30 minutes
+Kelly, 30 minutes
+Michael, 15 minutes 
+
+9/8/20
+- Timothy: 1 hour, 8p - 9p
+- Preeth: 1 hour, 9p - 10p
+- Timothy: 1 hour, 10p - 11p
+
+9/9/20
+- Preeth: 1 hour, 10p - 11p
+- Timothy: 1 hour, 11p - 12p
+- Preeth: 1 hour, 12p - 1a
+
+9/10/20
+- Timothy: 1 hour, 7p - 8p
+- Preeth: 1 hour, 8p - 9p
+
+9/14/20
+- Timothy: 1 hour, 7p - 8p
+- Preeth: 1 hour, 8p - 9p
+- Timothy: 1 hour, 9p - 10p
+
+9/15/20
+- Preeth: 1 hour, 8p - 9p
+- Timothy: 1 hour, 9p - 10p
+
+9/16/20
+- Timothy: 1 hour, 6p - 7p
+- Preeth: 1 hour, 7p - 8p

@@ -1,0 +1,198 @@
+                        +--------------------+
+                        |        CS 439      |
+                        |  PROJECT 0: SHELL  |
+                        |   DESIGN DOCUMENT  |
+                        +--------------------+
+
+
+The questions in this design document should reflect the design of the code you
+wrote for the project.  Your grade will reflect both the quality of your answer 
+in this document and the quality of the design implementation in your code.  You
+may receive partial credit for answering questions for parts of the project that
+you did not get to implement, but you must indicate in your answer that there is
+no corresponding implementation, or you will not receive any credit.
+
+For each question, you should include both the name of the file(s), function 
+name(s), and the line numbers where the relevant code may be found.
+
+These design documents will be completed and submitted as a group.  Please use 
+this document as a guide for design and discuss the questions and their 
+potential answers prior to beginning implementation.
+
+When you have completed your design document, submit it to the Canvas 
+assignment Project 0 Design and Documentation.  
+
+***Your submission must be a text file and each line must not extend past 80 
+characters.  In addition, your submission must contain all of the original 
+material and not exceed 8,000 characters.  The character count will be measured
+using the Linux command wc.  (Note that rtf files are NOT text files.)
+
+
+################
+TEAM INFO
+################
+Name: Timothy Zhang
+EID: tz3723
+CS login: tz3723
+Email: zhang.timothy@utexas.edu
+Unique Number: 51060
+
+
+Name: Preeth Kanamangala
+EID: pk9297
+CS login: preeth
+Email: preeth@utexas.edu
+Unique Number: 51065
+
+
+Slip Days Used: 0
+
+
+
+################
+Preliminaries
+################
+(1) If you have any preliminary comments on your submission or notes for
+  the TA, please give them here.
+
+
+(2) Please cite any offline or online sources you consulted while
+  preparing your submission, other than the Linux documentation,
+  course text, and lecture notes.
+
+  Kevin's blog post, which was linked on the project document.
+
+
+
+
+################
+Questions regarding Part 0
+################
+(1) How many child processes are created when doFib() 
+  begins with an input of 5?  Show the return value for 
+  each child process, numbering the processes beginning 
+  with 0 (the original process) and incrementing for
+  each child process.
+
+  file: fib.c
+
+  14 child processes are created.
+
+  process 0: 5
+  process 1: 2
+  process 2: 1
+  process 3: 1
+  process 4: 0
+  process 5: 1
+  process 6: 3
+  process 7: 1
+  process 8: 0
+  process 9: 1
+  process 10: 2
+  process 11: 1
+  process 12: 1
+  process 13: 0
+  process 14: 1
+
+
+
+
+
+
+
+(2) Explain how you communicated the return value of the 
+  child to the parent. What feature of wait() did you use?
+
+  The child would return a value to the parent by calling 
+  exit(value). We did this on line 103. The parent would 
+  recieve this value by storing the child's exit status in 
+  an int* passed to wait, for example: wait(&childExitStatus). 
+  We did this on lines 77 and 88. The parent would convert 
+  this into an int by using the macro WEXITSTATUS(childExitStatus). 
+  We did this on lines 78 and 89.
+
+
+################
+Questions regarding Part 1
+################
+(1) Explain how you decided to implement your command 
+  parsing (turning a single char* into something the shell 
+  can understand) for Part 1.2. Be sure to address the 
+  following points:
+
+  (a) How did you break up the command line into individual 
+      arguments?
+  (b) How did you detect invalid input?
+
+  file: utcsh.c
+  
+  In function tokenize_command_line, we started by splitting 
+  the input line into tokens using strtok() with " " and "\n" 
+  as delimiters and making a token list(lines 251-262). In 
+  function parse_command, we then take this token list and 
+  use it to assign the various fields in the struct 
+  Command(lines 282-353). We detected valid input by 
+  checking that the number of tokens that was given corresponds 
+  to a valid number of arguments for the corresponding 
+  command(lines 367, 382, 399).
+
+(2) How did you use getline() to read input without 
+  overflowing an input buffer?  Was there another way you 
+  could have done this? Why did you choose your method 
+  instead of the other one?
+
+  getLine() automatically dynamically allocates space for 
+  the buffer containing the text, so we just have to make 
+  sure to free the pointer that was passed as the first 
+  argument to getLine() to prevent memory leaks. We could 
+  have used fgets() to read input. We chose to use getline() 
+  instead of fgets() because we are more familiar with 
+  getline().
+
+################
+Questions regarding Part 2
+################
+(1) Explain your implementation of concurrent commands: how 
+  did you represent the multiple commands in your code? How 
+  did you make sure that the commands are executed 
+  concurrently instead of one after the other?
+
+  We kept a global list of commands recieved. In 
+  splitConcurrentCommands, we tokenize the input line into 
+  individual commands by using "&" as a delimiter(lines 107-118). 
+  We then use tokenize_command_line and parse_command to convert 
+  these into commands and add them to our list of global 
+  commands. If none of the commands are built-in commands, 
+  we run them concurrently in runConcurrently by looping 
+  through the global command list, forking, and making the 
+  child process call eval on the command(lines 89-98). The 
+  parent process then waits for all of the children to 
+  finish(line 100).
+
+(2) One potential strategy for redirecting output is to run 
+  the following code:
+
+  ```
+  FILE* output = fopen(filename, "w");
+  stdout = output;
+  stderr = output;
+  ```
+
+  This causes everything that would normally be written to 
+  `stdout` to instead be written to the file described by 
+  filename. Unfortunately, this strategy does not work for 
+  output redirection in utcsh. More generally, it does not
+  work any time fork-and-exec is used and we want to 
+  redirect the output of the child process.
+
+  Explain why this technique does not work when used in 
+  conjunction with fork-and-exec, and why the dup2() 
+  technique you used does not suffer the same issue.
+
+  This potential method doesn't work because directly 
+  modifying stdout and stderr in the parent doesn't change 
+  their values in the child. dup2 creates a duplicate of a 
+  file descriptor, so that both duplicates can be used 
+  interchangeably. This means that the output location can  
+  be changed and preserved in children, so that output is 
+  redirected to the file even when the parent forks and execs. 

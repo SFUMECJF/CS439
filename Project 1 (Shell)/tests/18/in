@@ -1,0 +1,5 @@
+path tests /bin
+p6.sh > /tmp/output19
+cat /tmp/output19
+rm -f /tmp/output19
+exit

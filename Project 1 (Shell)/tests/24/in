@@ -1,0 +1,17 @@
+path
+/bin/echo "Should succeed"
+echo "Should fail"
+
+path /bin
+/bin/echo "Should succeed"
+echo "Should succeed"
+
+path /nonexistent/directory /bin
+/bin/echo "Should succeed"
+echo "Should succeed"
+
+path this/obviously/doesnt/exist
+/bin/echo "Should succeed"
+echo "Should fail"
+
+exit
