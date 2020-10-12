@@ -1,0 +1,9 @@
+    Create a disk and run program:
+pintos-mkdisk filesys.dsk --filesys-size=2
+pintos -p ../../examples/echo -a echo -- -f -q run 'echo x'
+
+    Create disk and run program and discard disk:
+pintos --filesys-size=2 -p ../../examples/echo -a echo -- -f -q run 'echo x'
+
+    Remove file:
+pintos -q rm <filename>
