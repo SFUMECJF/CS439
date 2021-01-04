@@ -1,0 +1,17 @@
+10/5/2020
+    made infinite loop and changed the thing to -12
+
+10/6
+    added tokenize_command_line in process.c
+    added things
+    TODO: fix thsi shit
+
+10/7
+    do stuff inside setup_stack()
+    use memcpy to add to stack
+    strlen off by one error
+    // done for today
+    // office hour questions
+    Is user memory access just a part of each syscall?
+    For user memory access, we're just handling the arguments they pass to syscalls?
+    --- implement user memory access (syscall.c, vaddr.h, pagedir.c)
